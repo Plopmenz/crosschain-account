@@ -11,10 +11,8 @@ export async function deployCrossChainGovernanceSender(
     .deploy({
       id: "CrossChainGovernanceSender",
       contract: "CrossChainGovernanceSender",
-      args: [
-        "0x6edce65403992e310a62460808c4b910d972f10f",
-        deployer.settings.defaultFrom,
-      ],
+      args: ["0x1035CabC275068e0F4b745A29CEDf38E13aF41b1"],
+      chainId: 80001,
       ...settings,
     })
     .then((deployment) => deployment.address);

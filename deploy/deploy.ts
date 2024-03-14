@@ -7,23 +7,10 @@ import {
   DeployCrossChainGovernanceSenderSettings,
   deployCrossChainGovernanceSender,
 } from "./internal/CrossChainGovernanceSender";
-import {
-  SetReceiverPeerSettings,
-  setReceiverPeer,
-} from "./internal/SetReceiverPeer";
-import { SetSenderPeerSettings, setSenderPeer } from "./internal/SetSenderPeer";
 
 export interface CrossChainGovernanceDeploymentSettings {
   deployReceiverSettings: DeployCrossChainGovernanceReceiverSettings;
   deploySenderSettings: DeployCrossChainGovernanceSenderSettings;
-  setReceiverPeerSettings: Omit<
-    SetReceiverPeerSettings,
-    "receiver" | "sender" | "senderChainEid"
-  >;
-  setSenderPeerSettings: Omit<
-    SetSenderPeerSettings,
-    "sender" | "receiver" | "receiverChainEid"
-  >;
   forceRedeploy?: boolean;
 }
 
@@ -41,26 +28,10 @@ export async function deploy(
   }
 
   const receiver = await deployCrossChainGovernanceReceiver(deployer, {
-    chainId: 11155111,
     ...(settings?.deployReceiverSettings ?? {}),
   });
   const sender = await deployCrossChainGovernanceSender(deployer, {
-    chainId: 80001,
     ...(settings?.deploySenderSettings ?? {}),
-  });
-  await setReceiverPeer(deployer, {
-    chainId: 11155111,
-    reveiver: receiver,
-    sender: sender,
-    senderChainEid: BigInt(40109),
-    ...(settings?.setReceiverPeerSettings ?? {}),
-  });
-  await setSenderPeer(deployer, {
-    chainId: 80001,
-    sender: sender,
-    reveiver: receiver,
-    reveiverChainEid: BigInt(40161),
-    ...(settings?.setReceiverPeerSettings ?? {}),
   });
 
   const deployment = {

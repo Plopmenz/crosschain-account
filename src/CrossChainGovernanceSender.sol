@@ -1,20 +1,40 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {OAppSender, OAppCore, MessagingFee} from "../lib/LayerZero-v2/oapp/contracts/oapp/OAppSender.sol";
-import {Ownable} from "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import {IRouterClient, Client} from "../lib/ccip/IRouterClient.sol";
 
-contract CrossChainGovernanceSender is OAppSender {
-    event Ping(string message);
+contract CrossChainGovernanceSender {
+    event Ping(string info);
 
-    constructor(address _endpoint, address _owner) OAppCore(_endpoint, _owner) Ownable(_owner) {}
+    IRouterClient internal immutable router;
 
-    function quote(uint32 _dstEid, string calldata _message, bytes calldata _options) external view returns (uint256) {
-        return _quote(_dstEid, abi.encode(_message), _options, false).nativeFee;
+    constructor(IRouterClient _router) {
+        router = _router;
     }
 
-    function sendPing(uint32 _dstEid, string calldata _message, bytes calldata _options) external payable {
-        _lzSend(_dstEid, abi.encode(_message), _options, MessagingFee(msg.value, 0), payable(msg.sender));
-        emit Ping(_message);
+    function quote(uint64 _chain, address _receiver, string calldata _info) external view returns (uint256) {
+        Client.EVM2AnyMessage memory message = createMessage(_receiver, _info);
+        return router.getFee(_chain, message);
+    }
+
+    function sendPing(uint64 _chain, address _receiver, string calldata _info) external payable {
+        Client.EVM2AnyMessage memory message = createMessage(_receiver, _info);
+        uint256 fee = router.getFee(_chain, message);
+        router.ccipSend{value: fee}(_chain, message);
+        emit Ping(_info);
+    }
+
+    function createMessage(address _receiver, string memory _info)
+        internal
+        pure
+        returns (Client.EVM2AnyMessage memory)
+    {
+        return Client.EVM2AnyMessage({
+            receiver: abi.encode(_receiver),
+            data: abi.encode(_info),
+            tokenAmounts: new Client.EVMTokenAmount[](0),
+            extraArgs: "",
+            feeToken: address(0)
+        });
     }
 }
