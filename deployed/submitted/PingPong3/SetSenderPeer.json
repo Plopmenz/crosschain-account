@@ -1,0 +1,26 @@
+{
+  "type": "function",
+  "id": "SetSenderPeer",
+  "batch": "PingPong3",
+  "functionName": "setPeer",
+  "functionArgs": [
+    "40161",
+    "0x0000000000000000000000004f27ddD9dBE1F29e257Be48ffc427a57Ae7E9573"
+  ],
+  "to": "0x0dDB0F3FE871E25B3c5b22825Fa16CEceB031bF3",
+  "value": "0",
+  "data": "0x3400288b0000000000000000000000000000000000000000000000000000000000009ce10000000000000000000000004f27ddD9dBE1F29e257Be48ffc427a57Ae7E9573",
+  "gas": "47464",
+  "from": "0xaF7E68bCb2Fc7295492A00177f14F59B92814e70",
+  "transactionSettings": {
+    "chainId": 80001,
+    "nonce": "577",
+    "baseFee": "1500000015",
+    "priorityFee": "1000000000"
+  },
+  "source": "/home/plopmenz/crosschain-governance",
+  "submitted": {
+    "transactionHash": "0x57e547716019cdb921fd51b76c9423d2a44cf3b7632d3c7b0668a3f46f0d3dd2",
+    "date": "2024-03-14T16:32:09.890Z"
+  }
+}

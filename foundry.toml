@@ -2,6 +2,10 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+remappings = [
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
+    "@layerzerolabs/lz-evm-protocol-v2/contracts/=lib/LayerZero-v2/protocol/contracts/"
+]
 
 number_underscore="thousands"
 

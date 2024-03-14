@@ -4,3 +4,9 @@
 [submodule "web3webdeploy"]
 	path = web3webdeploy
 	url = https://github.com/Plopmenz/web3webdeploy
+[submodule "lib/LayerZero-v2"]
+	path = lib/LayerZero-v2
+	url = https://github.com/LayerZero-Labs/LayerZero-v2
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
